@@ -1,0 +1,65 @@
+// api 语法版本
+syntax = "v1"
+
+info(
+	title: "user-api"
+	desc: "user api"
+	author: "iefoac"
+	version: 1.0
+)
+
+type (
+	UserCreateReq {
+		Mobile   string `json:"mobile"`
+		NickName string `json:"nickname"`
+	}
+	UserCreateResp {
+		Flag bool `json:"flag"`
+	}
+)
+
+type (
+	UserInfoReq {
+		UserId int64 `json:"userId"`
+	}
+	UserInfoResp {
+		UserId   int64  `json:"userId"`
+		NickName string `json:"nickname"`
+	}
+)
+
+type (
+	UserUpdateReq {
+		UserId   int64  `json:"userId"`
+		NickName string `json:"nickname"`
+	}
+	UserUpdateResp {
+		Flag bool `json:"flag"`
+	}
+)
+
+@server(
+	group: user
+	prefix: userapi/v1
+	middleware: TetsMiddleware
+)
+service user-api {
+	@doc(
+		summary: "新增用户"
+	)
+	@handler userCreate
+	post /user/create (UserCreateReq) returns(UserCreateResp)
+	
+	@doc(
+		summary: "获取用户信息"
+	)
+	@handler userInfo
+	post /user/info(UserInfoReq) returns(UserInfoResp)
+	
+	@doc(
+		summary: "修改用户信息"
+	)
+	@handler userUpdate
+	post /user/update(UserUpdateReq) returns(UserUpdateResp)
+	
+}
